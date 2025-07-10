@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live Chat</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+</head>
+<body>
+  <h1>Live Chat</h1>
+  <input type="text" id="msgInput" placeholder="Type message..." />
+  <button onclick="sendMessage()">Send</button>
+  <div id="messages"></div>
+
+  <script>
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyD7w-qWliZzxfoIQogsEOA7c9v4WS9V4Wc",
+  authDomain: "hyper-6a94b.firebaseapp.com",
+  databaseURL: "https://hyper-6a94b-default-rtdb.firebaseio.com",
+  projectId: "hyper-6a94b",
+  storageBucket: "hyper-6a94b.firebasestorage.app",
+  messagingSenderId: "1061114816038",
+  appId: "1:1061114816038:web:1f4eca2c709c2ee63728e7",
+  measurementId: "G-EMJLGJHZ9B"
+};
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    function sendMessage() {
+      const msg = document.getElementById("msgInput").value;
+      db.ref("messages").push({ text: msg });
+      document.getElementById("msgInput").value = "";
+    }
+
+    db.ref("messages").on("child_added", function(snapshot) {
+      const msg = snapshot.val().text;
+      const div = document.createElement("div");
+      div.innerText = msg;
+      document.getElementById("messages").appendChild(div);
+    });
+  </script>
+</body>
+</html>
